@@ -1,0 +1,175 @@
+.create-meeting-container {
+    min-height: calc(100vh - 80px);
+    padding: 2rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.create-meeting-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2.5rem;
+}
+
+.create-meeting-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.create-meeting-header h1 {
+    color: #333;
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.create-meeting-header p {
+    color: #666;
+    font-size: 1rem;
+}
+
+.create-meeting-form {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1rem;
+}
+
+.optional {
+    color: #999;
+    font-size: 0.85rem;
+    font-weight: normal;
+    margin-left: 0.3rem;
+}
+
+.invitee-input-group {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.invitee-input-group input {
+    flex: 1;
+}
+
+.btn-add-invitee {
+    padding: 0 1.5rem;
+    background: #667eea;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    transition: all 0.3s;
+}
+
+.btn-add-invitee:hover:not(:disabled) {
+    background: #5a67d8;
+    transform: translateY(-1px);
+}
+
+.btn-add-invitee:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.invitees-list {
+    margin: 1rem 0;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+}
+
+.invitees-list label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #333;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.invitee-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.invitee-tag {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: #e0e7ff;
+    color: #667eea;
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+}
+
+.remove-invitee {
+    background: none;
+    border: none;
+    color: #667eea;
+    cursor: pointer;
+    font-size: 1.2rem;
+    padding: 0 0.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.remove-invitee:hover {
+    color: #dc2626;
+}
+
+.form-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 2px solid #e0e0e0;
+}
+
+.btn-secondary {
+    background: #e0e0e0;
+    color: #333;
+}
+
+.btn-secondary:hover {
+    background: #d0d0d0;
+}
+
+@media (max-width: 768px) {
+    .create-meeting-container {
+        padding: 1rem;
+    }
+    
+    .create-meeting-card {
+        padding: 1.5rem;
+    }
+    
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+    
+    .invitee-input-group {
+        flex-direction: column;
+    }
+    
+    .btn-add-invitee {
+        padding: 0.8rem;
+    }
+    
+    .form-actions {
+        flex-direction: column;
+    }
+    
+    .form-actions button {
+        width: 100%;
+    }
+}

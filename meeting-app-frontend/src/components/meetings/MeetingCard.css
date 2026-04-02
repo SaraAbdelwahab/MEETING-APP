@@ -1,0 +1,245 @@
+.meeting-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1rem;
+    display: flex;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    position: relative;
+    border-left: 4px solid #667eea;
+}
+
+.meeting-card:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    transform: translateX(4px);
+}
+
+.past-meeting {
+    opacity: 0.7;
+    background: #f8f9fa;
+    border-left-color: #999;
+}
+
+.meeting-time {
+    background: #f8f9fa;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 120px;
+    border-right: 1px solid #e0e0e0;
+}
+
+.date-badge {
+    text-align: center;
+    margin-bottom: 0.5rem;
+}
+
+.month {
+    display: block;
+    font-size: 0.9rem;
+    color: #666;
+    text-transform: uppercase;
+}
+
+.day {
+    display: block;
+    font-size: 2rem;
+    font-weight: bold;
+    color: #333;
+    line-height: 1.2;
+}
+
+.time-info {
+    text-align: center;
+}
+
+.time {
+    display: block;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #667eea;
+}
+
+.duration {
+    display: block;
+    font-size: 0.85rem;
+    color: #999;
+    margin-top: 0.2rem;
+}
+
+.meeting-content {
+    flex: 1;
+    padding: 1.5rem;
+    cursor: pointer;
+}
+
+.meeting-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.meeting-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #333;
+    margin: 0;
+}
+
+.meeting-description {
+    color: #666;
+    font-size: 0.95rem;
+    margin-bottom: 1rem;
+    line-height: 1.5;
+}
+
+.meeting-meta {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.meta-item {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.meta-icon {
+    font-size: 1rem;
+}
+
+.today-tag {
+    background: #ff4444;
+    color: white;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.badge {
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.badge-creator {
+    background: #667eea;
+    color: white;
+}
+
+.badge-accepted {
+    background: #4caf50;
+    color: white;
+}
+
+.badge-declined {
+    background: #f44336;
+    color: white;
+}
+
+.badge-pending {
+    background: #ff9800;
+    color: white;
+}
+
+.meeting-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-left: 1px solid #e0e0e0;
+    min-width: 100px;
+}
+
+.action-btn {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+
+.action-btn:hover:not(:disabled) {
+    transform: translateY(-1px);
+}
+
+.action-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.accept-btn {
+    background: #4caf50;
+    color: white;
+}
+
+.accept-btn:hover:not(:disabled) {
+    background: #45a049;
+}
+
+.decline-btn {
+    background: #f44336;
+    color: white;
+}
+
+.decline-btn:hover:not(:disabled) {
+    background: #da190b;
+}
+
+.delete-btn {
+    background: #ff9800;
+    color: white;
+}
+
+.delete-btn:hover:not(:disabled) {
+    background: #e68a00;
+}
+
+.view-btn {
+    background: #667eea;
+    color: white;
+}
+
+.view-btn:hover:not(:disabled) {
+    background: #5a67d8;
+}
+
+@media (max-width: 768px) {
+    .meeting-card {
+        flex-direction: column;
+    }
+    
+    .meeting-time {
+        flex-direction: row;
+        justify-content: space-around;
+        padding: 1rem;
+        border-right: none;
+        border-bottom: 1px solid #e0e0e0;
+    }
+    
+    .date-badge {
+        margin-bottom: 0;
+        margin-right: 1rem;
+    }
+    
+    .meeting-actions {
+        flex-direction: row;
+        justify-content: flex-end;
+        border-left: none;
+        border-top: 1px solid #e0e0e0;
+    }
+}

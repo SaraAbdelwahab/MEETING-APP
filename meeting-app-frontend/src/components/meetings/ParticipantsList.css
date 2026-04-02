@@ -1,0 +1,129 @@
+.participants-container {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.participants-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+.participants-header h3 {
+    color: #333;
+    font-size: 1.2rem;
+    margin: 0;
+}
+
+.participants-summary {
+    display: flex;
+    gap: 1rem;
+}
+
+.summary-badge {
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    background: #f8f9fa;
+}
+
+.participant-group {
+    margin-bottom: 1.5rem;
+}
+
+.group-title {
+    color: #666;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.8rem;
+}
+
+.participant-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem;
+    border-radius: 8px;
+    transition: background-color 0.2s;
+    margin-bottom: 0.3rem;
+}
+
+.participant-item:hover {
+    background-color: #f8f9fa;
+}
+
+.participant-item.declined {
+    opacity: 0.7;
+}
+
+.participant-info {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    flex: 1;
+}
+
+.status-icon {
+    font-size: 1.1rem;
+    min-width: 24px;
+}
+
+.participant-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.participant-name {
+    font-weight: 500;
+    color: #333;
+}
+
+.participant-email {
+    font-size: 0.85rem;
+    color: #999;
+}
+
+.remove-participant {
+    background: none;
+    border: none;
+    color: #999;
+    cursor: pointer;
+    font-size: 1.2rem;
+    padding: 0.3rem 0.6rem;
+    border-radius: 4px;
+    transition: all 0.2s;
+}
+
+.remove-participant:hover {
+    background-color: #fee2e2;
+    color: #dc2626;
+}
+
+.no-participants {
+    text-align: center;
+    padding: 2rem;
+    color: #999;
+    font-style: italic;
+}
+
+@media (max-width: 768px) {
+    .participants-header {
+        flex-direction: column;
+        gap: 0.5rem;
+        align-items: flex-start;
+    }
+    
+    .participant-info {
+        flex-wrap: wrap;
+    }
+    
+    .remove-participant {
+        padding: 0.3rem;
+    }
+}

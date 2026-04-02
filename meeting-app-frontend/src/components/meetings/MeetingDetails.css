@@ -1,0 +1,432 @@
+.meeting-details-container {
+    min-height: calc(100vh - 80px);
+    padding: 2rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.meeting-details-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.meeting-details-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.back-button {
+    background: none;
+    border: none;
+    color: #667eea;
+    font-size: 1rem;
+    cursor: pointer;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    transition: all 0.2s;
+}
+
+.back-button:hover {
+    background: #f0f0f0;
+}
+
+.header-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.meeting-title-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+.meeting-title-section h1 {
+    font-size: 2rem;
+    color: #333;
+    margin: 0;
+}
+
+.meeting-badges {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.badge-past {
+    background: #9ca3af;
+    color: white;
+}
+
+.meeting-info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background: #f8f9fa;
+    border-radius: 12px;
+}
+
+.info-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+.info-label {
+    font-size: 0.9rem;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.info-value {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #333;
+}
+
+.meeting-description-section {
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background: #f8f9fa;
+    border-radius: 12px;
+}
+
+.meeting-description-section h3 {
+    color: #333;
+    font-size: 1.1rem;
+    margin-bottom: 0.8rem;
+}
+
+.description-text {
+    color: #666;
+    line-height: 1.6;
+    white-space: pre-wrap;
+}
+
+.invitation-actions {
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background: #e0f2fe;
+    border-radius: 12px;
+    text-align: center;
+}
+
+.invitation-text {
+    color: #0369a1;
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.btn-success {
+    background: #4caf50;
+    color: white;
+}
+
+.btn-success:hover {
+    background: #45a049;
+}
+
+.edit-meeting-form {
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background: #f8f9fa;
+    border-radius: 12px;
+}
+
+.edit-meeting-form h2 {
+    color: #333;
+    margin-bottom: 1.5rem;
+}
+
+.edit-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+    margin-top: 1.5rem;
+}
+
+.participants-section {
+    margin-top: 2rem;
+}
+
+.meeting-details-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 400px;
+}
+
+.meeting-details-loading .spinner {
+    width: 50px;
+    height: 50px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #667eea;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 1rem;
+}
+
+.meeting-details-error,
+.meeting-not-found {
+    text-align: center;
+    padding: 4rem 2rem;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    max-width: 500px;
+    margin: 4rem auto;
+}
+
+.error-icon,
+.not-found-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.meeting-details-error h3,
+.meeting-not-found h3 {
+    font-size: 1.3rem;
+    color: #333;
+    margin-bottom: 0.5rem;
+}
+
+.meeting-details-error p,
+.meeting-not-found p {
+    color: #666;
+    margin-bottom: 1.5rem;
+}
+
+
+/* Connection Banner */
+.connection-banner {
+    margin-bottom: 1rem;
+    padding: 0.8rem 1rem;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.connection-banner.warning {
+    background: #fff3e0;
+    color: #f57c00;
+    border: 1px solid #ffe0b2;
+}
+
+.connection-banner.error {
+    background: #ffebee;
+    color: #f44336;
+    border: 1px solid #ffcdd2;
+}
+
+.connection-banner.success {
+    background: #e8f5e9;
+    color: #4caf50;
+    border: 1px solid #c8e6c9;
+}
+
+.banner-icon {
+    font-size: 1.2rem;
+}
+
+/* Tabs */
+.details-tabs {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+    border-bottom: 2px solid #e0e0e0;
+    padding-bottom: 0.5rem;
+}
+
+.details-tabs .tab-btn {
+    padding: 0.5rem 1.5rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    color: #666;
+    border-radius: 20px;
+    transition: all 0.3s;
+    position: relative;
+}
+
+.details-tabs .tab-btn:hover {
+    background: #f0f0f0;
+    color: #333;
+}
+
+.details-tabs .tab-btn.active {
+    background: #667eea;
+    color: white;
+}
+
+.tab-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: #f44336;
+    color: white;
+    font-size: 0.7rem;
+    padding: 0.1rem 0.3rem;
+    border-radius: 10px;
+}
+
+
+.chat-section {
+    margin-top: 1rem;
+}
+
+
+.participants-section {
+    margin-top: 2rem;
+}
+
+
+/* Call Button */
+.btn-call {
+    background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
+    color: white;
+    margin-right: 0.5rem;
+}
+
+.btn-call.in-call {
+    background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(255, 152, 0, 0.7);
+    }
+    70% {
+        box-shadow: 0 0 0 10px rgba(255, 152, 0, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(255, 152, 0, 0);
+    }
+}
+
+/* Call Modal */
+.call-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.9);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.3s ease;
+}
+
+.call-modal-content {
+    width: 90%;
+    height: 90%;
+    background: #1a1a1a;
+    border-radius: 12px;
+    position: relative;
+    overflow: hidden;
+}
+
+.close-call {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    z-index: 1001;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+}
+
+.close-call:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.1);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@media (max-width: 768px) {
+    .call-modal-content {
+        width: 100%;
+        height: 100%;
+        border-radius: 0;
+    }
+}
+
+
+
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+@media (max-width: 768px) {
+    .meeting-details-container {
+        padding: 1rem;
+    }
+    
+    .meeting-details-card {
+        padding: 1rem;
+    }
+    
+    .meeting-title-section {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+    
+    .meeting-title-section h1 {
+        font-size: 1.5rem;
+    }
+    
+    .meeting-info-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .action-buttons {
+        flex-direction: column;
+    }
+    
+    .edit-actions {
+        flex-direction: column;
+    }
+    
+    .edit-actions button {
+        width: 100%;
+    }
+}
