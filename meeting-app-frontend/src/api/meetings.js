@@ -11,7 +11,7 @@ const meetingsAPI = {
      */
     getDashboardStats: async () => {
         try {
-            const response = await axiosInstance.get('/meetings/dashboard/stats');
+            const response = await axiosInstance.get('/meetings/stats');
             return response.data;
         } catch (error) {
             throw {
@@ -136,6 +136,23 @@ const meetingsAPI = {
         } catch (error) {
             throw {
                 message: error.message || 'Failed to search meetings',
+                status: error.status
+            };
+        }
+    },
+
+    /**
+     * Join meeting via link
+     * @param {number} meetingId
+     * @returns {Promise}
+     */
+    joinMeeting: async (meetingId) => {
+        try {
+            const response = await axiosInstance.post(`/meetings/${meetingId}/join`);
+            return response.data;
+        } catch (error) {
+            throw {
+                message: error.message || 'Failed to join meeting',
                 status: error.status
             };
         }

@@ -1,12 +1,19 @@
 // src/components/meetings/MeetingRoom.jsx
-import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom'; // ← React Router hooks
-import { useAuth } from '../../hooks/useAuth'; // ← Custom auth hook
-import { useSocket } from '../../hooks/useSocket'; // ← Custom socket hook
-import { useWebRTC } from '../../hooks/useWebRTC'; // ← Custom WebRTC hook
+import React, { useState, useEffect, useRef } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { useAuth } from '../../hooks/useAuth';
+import { useSocket } from '../../hooks/useSocket';
+import { useWebRTC } from '../../hooks/useWebRTC';
 import meetingsAPI from '../../api/meetings';
 import CallInterface from '../video/CallInterface';
 import ChatRoom from '../chat/ChatRoom';
+import BiometricEngine from '../security/BiometricEngine';
+import DeviceHandoffManager from '../security/DeviceHandoffManager';
+import { 
+    Mic, MicOff, Video, VideoOff, Monitor, MonitorOff,
+    MessageSquare, Users, PhoneOff, Settings, ArrowLeft,
+    Calendar, Clock, Timer
+} from 'lucide-react';
 import './MeetingRoom.css';
 
 const MeetingRoom = () => {
@@ -20,7 +27,7 @@ const MeetingRoom = () => {
     const { user, isAuthenticated } = useAuth();
     
     // 4. Get socket connection using useSocket()
-    const { connected, onlineUsers, joinMeeting, leaveMeeting } = useSocket();
+    const { connected, onlineUsers, joinMeeting, leaveMeeting, emit } = useSocket();
     
     // 5. Get WebRTC functionality using useWebRTC()
     const { 
@@ -31,8 +38,19 @@ const MeetingRoom = () => {
         leaveCall,
         toggleAudio,
         toggleVideo,
-        shareScreen
+        shareScreen,
+        isAudioEnabled,
+        isVideoEnabled,
+        isScreenSharing,
     } = useWebRTC();
+
+    // Refs to track current WebRTC state for snapshot sync
+    const isAudioEnabledRef = useRef(isAudioEnabled);
+    const isVideoEnabledRef = useRef(isVideoEnabled);
+    const isScreenSharingRef = useRef(isScreenSharing);
+    useEffect(() => { isAudioEnabledRef.current = isAudioEnabled; }, [isAudioEnabled]);
+    useEffect(() => { isVideoEnabledRef.current = isVideoEnabled; }, [isVideoEnabled]);
+    useEffect(() => { isScreenSharingRef.current = isScreenSharing; }, [isScreenSharing]);
 
     // Local state
     const [meeting, setMeeting] = useState(null);
@@ -40,6 +58,10 @@ const MeetingRoom = () => {
     const [error, setError] = useState('');
     const [showChat, setShowChat] = useState(true);
     const [showParticipants, setShowParticipants] = useState(true);
+    const [isJoining, setIsJoining] = useState(false);
+    const [hasJoined, setHasJoined] = useState(false);
+    const callStartTimeRef = useRef(null);
+    const snapshotIntervalRef = useRef(null);
 
     // Fetch meeting details
     useEffect(() => {
@@ -54,10 +76,8 @@ const MeetingRoom = () => {
                     p => p.id === user?.id
                 ) || response.meeting.created_by === user?.id;
                 
-                if (!isParticipant) {
-                    setError('You are not a participant in this meeting');
-                    setTimeout(() => navigate('/dashboard'), 3000);
-                }
+                setHasJoined(isParticipant);
+                
             } catch (err) {
                 setError(err.message || 'Failed to load meeting');
             } finally {
@@ -70,20 +90,55 @@ const MeetingRoom = () => {
         }
     }, [id, user, navigate]);
 
-    // Join Socket.IO room when component mounts
+    // Handle joining meeting
+    const handleJoinMeeting = async () => {
+        try {
+            setIsJoining(true);
+            await meetingsAPI.joinMeeting(id);
+            setHasJoined(true);
+            
+            // Refresh meeting data
+            const response = await meetingsAPI.getMeeting(id);
+            setMeeting(response.meeting);
+        } catch (err) {
+            setError(err.message || 'Failed to join meeting');
+        } finally {
+            setIsJoining(false);
+        }
+    };
+
+    // Join Socket.IO room when component mounts (only if user has joined)
     useEffect(() => {
-        if (id && connected) {
+        if (id && connected && hasJoined) {
             joinMeeting(id);
+            callStartTimeRef.current = Date.now();
             
             // Auto-join video call when entering meeting room
             joinCall(id);
+
+            // Start snapshot sync loop every 2 seconds for handoff continuity
+            snapshotIntervalRef.current = setInterval(() => {
+                emit('handoff:snapshot', {
+                    meetingId: parseInt(id),
+                    muteState: !isAudioEnabledRef.current,
+                    cameraState: isVideoEnabledRef.current,
+                    screenShareState: isScreenSharingRef.current,
+                    activeSpeakerId: null,
+                    chatScrollMessageId: null,
+                    elapsedMs: Date.now() - (callStartTimeRef.current || Date.now()),
+                });
+            }, 2000);
             
             return () => {
                 leaveMeeting(id);
                 leaveCall();
+                if (snapshotIntervalRef.current) {
+                    clearInterval(snapshotIntervalRef.current);
+                    snapshotIntervalRef.current = null;
+                }
             };
         }
-    }, [id, connected, joinMeeting, leaveMeeting, joinCall, leaveCall]);
+    }, [id, connected, hasJoined, joinMeeting, leaveMeeting, joinCall, leaveCall]);
 
     // Handle leaving the meeting
     const handleLeaveMeeting = () => {
@@ -115,6 +170,59 @@ const MeetingRoom = () => {
         );
     }
 
+    // Show join screen for non-participants
+    if (!hasJoined && meeting) {
+        return (
+            <div className="meeting-room">
+                <div className="meeting-room-header">
+                    <div className="meeting-info">
+                        <h1>{meeting?.title}</h1>
+                        <div className="meeting-stats">
+                            <span className="stat">
+                                <Calendar size={16} />
+                                {new Date(meeting.date).toLocaleDateString()}
+                            </span>
+                            <span className="stat">
+                                <Clock size={16} />
+                                {meeting.time}
+                            </span>
+                            <span className="stat">
+                                <Timer size={16} />
+                                {meeting.duration} minutes
+                            </span>
+                        </div>
+                    </div>
+                    <button 
+                        className="action-btn" 
+                        onClick={() => navigate('/dashboard')}
+                    >
+                        <ArrowLeft size={20} />
+                    </button>
+                </div>
+
+                <div className="join-meeting-screen">
+                    <div className="join-meeting-card">
+                        <div className="join-icon">🎥</div>
+                        <h2>Join "{meeting.title}"</h2>
+                        <p>Click the button below to join this meeting</p>
+                        {meeting.description && (
+                            <div className="meeting-description">
+                                <p>{meeting.description}</p>
+                            </div>
+                        )}
+                        <button 
+                            className="btn-join-large"
+                            onClick={handleJoinMeeting}
+                            disabled={isJoining}
+                        >
+                            {isJoining ? 'Joining...' : '🚀 Join Meeting'}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
     return (
         <div className="meeting-room">
             {/* Header */}
@@ -123,37 +231,49 @@ const MeetingRoom = () => {
                     <h1>{meeting?.title}</h1>
                     <div className="meeting-stats">
                         <span className="stat">
-                            👥 {meeting?.participants?.length || 0} participants
+                            <Users size={16} />
+                            {meeting?.participants?.length || 0} participants
                         </span>
                         <span className="stat">
-                            🟢 {onlineUsers.length} online
+                            <Users size={16} className="online-indicator" />
+                            {onlineUsers.length} online
                         </span>
                         <span className={`connection-status ${connected ? 'connected' : 'disconnected'}`}>
-                            {connected ? '● Connected' : '○ Disconnected'}
+                            <span className="status-dot"></span>
+                            {connected ? 'Connected' : 'Disconnected'}
                         </span>
+                        {/* Biometric presence indicator */}
+                        <BiometricEngine localStream={localStream} />
                     </div>
                 </div>
                 
                 <div className="meeting-actions">
                     <button 
-                        className="action-btn" 
+                        className={`action-btn ${showChat ? 'active' : ''}`}
                         onClick={() => setShowChat(!showChat)}
                         title={showChat ? 'Hide chat' : 'Show chat'}
                     >
-                        💬
+                        <MessageSquare size={20} />
                     </button>
                     <button 
-                        className="action-btn" 
+                        className={`action-btn ${showParticipants ? 'active' : ''}`}
                         onClick={() => setShowParticipants(!showParticipants)}
                         title={showParticipants ? 'Hide participants' : 'Show participants'}
                     >
-                        👥
+                        <Users size={20} />
                     </button>
+                    {/* Device handoff switcher */}
+                    <DeviceHandoffManager
+                        meetingId={id}
+                        onStateRestored={(snapshot) => {
+                            console.log('[MeetingRoom] State restored from snapshot:', snapshot);
+                        }}
+                    />
                     <button 
                         className="action-btn leave-btn" 
                         onClick={handleLeaveMeeting}
                     >
-                        📞 Leave
+                        <PhoneOff size={20} />
                     </button>
                 </div>
             </div>
@@ -173,7 +293,7 @@ const MeetingRoom = () => {
                     <div className="chat-sidebar">
                         <ChatRoom 
                             meetingId={id} 
-                            isParticipant={true}
+                            isParticipant={hasJoined}
                         />
                     </div>
                 )}
@@ -212,29 +332,33 @@ const MeetingRoom = () => {
                 <button 
                     className={`control-btn ${!inCall?.isAudioEnabled ? 'off' : ''}`}
                     onClick={toggleAudio}
+                    title={inCall?.isAudioEnabled ? 'Mute' : 'Unmute'}
                 >
-                    {inCall?.isAudioEnabled ? '🎤' : '🎤❌'}
-                    <span>Mute</span>
+                    {inCall?.isAudioEnabled ? <Mic size={24} /> : <MicOff size={24} />}
+                    <span>{inCall?.isAudioEnabled ? 'Mute' : 'Unmuted'}</span>
                 </button>
                 <button 
                     className={`control-btn ${!inCall?.isVideoEnabled ? 'off' : ''}`}
                     onClick={toggleVideo}
+                    title={inCall?.isVideoEnabled ? 'Stop Video' : 'Start Video'}
                 >
-                    {inCall?.isVideoEnabled ? '📹' : '📹❌'}
-                    <span>Video</span>
+                    {inCall?.isVideoEnabled ? <Video size={24} /> : <VideoOff size={24} />}
+                    <span>{inCall?.isVideoEnabled ? 'Stop Video' : 'Start Video'}</span>
                 </button>
                 <button 
                     className={`control-btn ${inCall?.isScreenSharing ? 'active' : ''}`}
                     onClick={shareScreen}
+                    title={inCall?.isScreenSharing ? 'Stop Sharing' : 'Share Screen'}
                 >
-                    🖥️
-                    <span>Share Screen</span>
+                    {inCall?.isScreenSharing ? <MonitorOff size={24} /> : <Monitor size={24} />}
+                    <span>{inCall?.isScreenSharing ? 'Stop Share' : 'Share Screen'}</span>
                 </button>
                 <button 
                     className="control-btn end-call"
                     onClick={handleLeaveMeeting}
+                    title="Leave Meeting"
                 >
-                    📞❌
+                    <PhoneOff size={24} />
                     <span>Leave</span>
                 </button>
             </div>

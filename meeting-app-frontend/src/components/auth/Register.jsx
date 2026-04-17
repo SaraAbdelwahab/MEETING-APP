@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import { useTheme } from '../../context/ThemeContext';
 import { validateRegister } from '../../utils/validators';
+import { Mail, Lock, Eye, EyeOff, ArrowRight, Shield, User, Sun, Moon } from 'lucide-react';
 import './Auth.css';
 
 const Register = () => {
     const navigate = useNavigate();
     const { register } = useAuth();
+    const { isDark, toggle } = useTheme();
 
-    // Form state
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -16,7 +18,6 @@ const Register = () => {
         confirmPassword: ''
     });
 
-    // UI state
     const [errors, setErrors] = useState({});
     const [apiError, setApiError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
@@ -24,7 +25,6 @@ const Register = () => {
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [acceptedTerms, setAcceptedTerms] = useState(false);
 
-    // Password strength indicators
     const getPasswordStrength = (password) => {
         let strength = 0;
         if (password.length >= 6) strength++;
@@ -35,36 +35,22 @@ const Register = () => {
     };
 
     const passwordStrength = getPasswordStrength(formData.password);
-    const strengthText = ['Weak', 'Fair', 'Good', 'Strong'];
-    const strengthColor = ['#ff4444', '#ffbb33', '#00C851', '#007E33'];
+    const strengthLabels = ['Too weak', 'Weak', 'Fair', 'Good', 'Strong'];
+    const strengthColors = ['#ff4444', '#ff4444', '#ffbb33', '#00C851', '#007E33'];
 
-    // Handle input changes
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setFormData(prev => ({
-            ...prev,
-            [name]: value
-        }));
-        // Clear field-specific error when user types
+        setFormData(prev => ({ ...prev, [name]: value }));
         if (errors[name]) {
-            setErrors(prev => ({
-                ...prev,
-                [name]: ''
-            }));
+            setErrors(prev => ({ ...prev, [name]: '' }));
         }
-        // Clear API error when user makes any change
-        if (apiError) {
-            setApiError('');
-        }
+        if (apiError) setApiError('');
     };
 
-    // Handle form submission
     const handleSubmit = async (e) => {
         e.preventDefault();
         
-        // Validate form
         const validation = validateRegister(formData);
-        
         if (!validation.isValid) {
             setErrors(validation.errors);
             return;
@@ -75,27 +61,23 @@ const Register = () => {
             return;
         }
 
-        // Clear any previous errors
         setErrors({});
         setApiError('');
         setIsLoading(true);
 
         try {
-            // Attempt registration
             await register({
                 name: formData.name,
                 email: formData.email,
                 password: formData.password
             });
             
-            // Show success message and redirect to login
             navigate('/login', { 
                 state: { 
                     message: 'Registration successful! Please login.' 
                 }
             });
         } catch (error) {
-            // Handle registration error
             setApiError(error.message || 'Registration failed. Please try again.');
         } finally {
             setIsLoading(false);
@@ -103,107 +85,112 @@ const Register = () => {
     };
 
     return (
-        <div className="auth-container">
-            <div className="auth-card register-card">
-                <div className="auth-header">
-                    <h2>Create Account</h2>
-                    <p>Join Meeting App today</p>
+        <div className="modern-auth-container">
+            {/* Theme Toggle */}
+            <button
+                onClick={toggle}
+                className="theme-toggle-auth"
+                aria-label="Toggle theme"
+            >
+                {isDark ? <Sun size={18} /> : <Moon size={18} />}
+            </button>
+
+            {/* Background Effects */}
+            <div className="auth-bg-effects">
+                <div className="auth-glow auth-glow-1" />
+                <div className="auth-glow auth-glow-2" />
+                <div className="auth-grid-bg" />
+            </div>
+
+            <div className="modern-auth-card">
+                {/* Logo/Brand */}
+                <div className="auth-brand">
+                    <div className="auth-brand-icon">
+                        <Shield size={24} />
+                    </div>
+                    <h1>Create Account</h1>
+                    <p>Join thousands of professionals using secure meetings</p>
                 </div>
 
-                {/* Error Alert */}
+                {/* Error Message */}
                 {apiError && (
-                    <div className="alert alert-error">
-                        <span className="alert-icon">⚠️</span>
+                    <div className="modern-alert modern-alert-error">
+                        <span>⚠</span>
                         <span>{apiError}</span>
-                        <button 
-                            className="alert-close" 
-                            onClick={() => setApiError('')}
-                        >
-                            ×
-                        </button>
+                        <button onClick={() => setApiError('')}>×</button>
                     </div>
                 )}
 
-                <form onSubmit={handleSubmit} className="auth-form">
+                <form onSubmit={handleSubmit} className="modern-auth-form">
                     {/* Name Field */}
-                    <div className="form-group">
-                        <label htmlFor="name">
-                            Full Name <span className="required">*</span>
-                        </label>
-                        <div className="input-wrapper">
-                            <span className="input-icon"></span>
+                    <div className="modern-form-group">
+                        <label htmlFor="name">Full Name</label>
+                        <div className="modern-input-wrapper">
+                            <User size={18} className="input-icon-left" />
                             <input
                                 type="text"
                                 id="name"
                                 name="name"
                                 value={formData.name}
                                 onChange={handleChange}
-                                placeholder="Enter your full name"
+                                placeholder="John Doe"
                                 className={errors.name ? 'error' : ''}
                                 disabled={isLoading}
                                 autoComplete="name"
                             />
                         </div>
-                        {errors.name && (
-                            <span className="error-message">{errors.name}</span>
-                        )}
+                        {errors.name && <span className="modern-error">{errors.name}</span>}
                     </div>
 
                     {/* Email Field */}
-                    <div className="form-group">
-                        <label htmlFor="email">
-                            Email Address <span className="required">*</span>
-                        </label>
-                        <div className="input-wrapper">
-                            <span className="input-icon"></span>
+                    <div className="modern-form-group">
+                        <label htmlFor="email">Email Address</label>
+                        <div className="modern-input-wrapper">
+                            <Mail size={18} className="input-icon-left" />
                             <input
                                 type="email"
                                 id="email"
                                 name="email"
                                 value={formData.email}
                                 onChange={handleChange}
-                                placeholder="Enter your email"
+                                placeholder="you@example.com"
                                 className={errors.email ? 'error' : ''}
                                 disabled={isLoading}
                                 autoComplete="email"
                             />
                         </div>
-                        {errors.email && (
-                            <span className="error-message">{errors.email}</span>
-                        )}
+                        {errors.email && <span className="modern-error">{errors.email}</span>}
                     </div>
 
                     {/* Password Field */}
-                    <div className="form-group">
-                        <label htmlFor="password">
-                            Password <span className="required">*</span>
-                        </label>
-                        <div className="input-wrapper">
-                            <span className="input-icon"></span>
+                    <div className="modern-form-group">
+                        <label htmlFor="password">Password</label>
+                        <div className="modern-input-wrapper">
+                            <Lock size={18} className="input-icon-left" />
                             <input
                                 type={showPassword ? 'text' : 'password'}
                                 id="password"
                                 name="password"
                                 value={formData.password}
                                 onChange={handleChange}
-                                placeholder="Create a password"
+                                placeholder="Create a strong password"
                                 className={errors.password ? 'error' : ''}
                                 disabled={isLoading}
                                 autoComplete="new-password"
                             />
                             <button
                                 type="button"
-                                className="password-toggle"
+                                className="input-icon-right"
                                 onClick={() => setShowPassword(!showPassword)}
                                 tabIndex="-1"
                             >
-                                {showPassword ? '👁️' : '👁️‍🗨️'}
+                                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                             </button>
                         </div>
                         
-                        {/* Password strength indicator */}
+                        {/* Password Strength */}
                         {formData.password && (
-                            <div className="password-strength">
+                            <div className="password-strength-modern">
                                 <div className="strength-bars">
                                     {[1, 2, 3, 4].map((level) => (
                                         <div
@@ -211,37 +198,29 @@ const Register = () => {
                                             className="strength-bar"
                                             style={{
                                                 backgroundColor: level <= passwordStrength 
-                                                    ? strengthColor[passwordStrength - 1] 
-                                                    : '#ddd',
-                                                width: '25%'
+                                                    ? strengthColors[passwordStrength] 
+                                                    : 'rgba(255,255,255,0.1)',
                                             }}
                                         />
                                     ))}
                                 </div>
                                 <span 
-                                    className="strength-text"
-                                    style={{ color: strengthColor[passwordStrength - 1] }}
+                                    className="strength-label"
+                                    style={{ color: strengthColors[passwordStrength] }}
                                 >
-                                    {strengthText[passwordStrength - 1] || 'Too weak'}
+                                    {strengthLabels[passwordStrength]}
                                 </span>
                             </div>
                         )}
                         
-                        {errors.password && (
-                            <span className="error-message">{errors.password}</span>
-                        )}
-                        <small className="hint">
-                            Password must be at least 6 characters with letters and numbers
-                        </small>
+                        {errors.password && <span className="modern-error">{errors.password}</span>}
                     </div>
 
                     {/* Confirm Password Field */}
-                    <div className="form-group">
-                        <label htmlFor="confirmPassword">
-                            Confirm Password <span className="required">*</span>
-                        </label>
-                        <div className="input-wrapper">
-                            <span className="input-icon"></span>
+                    <div className="modern-form-group">
+                        <label htmlFor="confirmPassword">Confirm Password</label>
+                        <div className="modern-input-wrapper">
+                            <Lock size={18} className="input-icon-left" />
                             <input
                                 type={showConfirmPassword ? 'text' : 'password'}
                                 id="confirmPassword"
@@ -255,21 +234,19 @@ const Register = () => {
                             />
                             <button
                                 type="button"
-                                className="password-toggle"
+                                className="input-icon-right"
                                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                                 tabIndex="-1"
                             >
-                                {showConfirmPassword ? '👁️' : '👁️‍🗨️'}
+                                {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                             </button>
                         </div>
-                        {errors.confirmPassword && (
-                            <span className="error-message">{errors.confirmPassword}</span>
-                        )}
+                        {errors.confirmPassword && <span className="modern-error">{errors.confirmPassword}</span>}
                     </div>
 
-                    {/* Terms and Conditions */}
-                    <div className="form-group terms-group">
-                        <label className="checkbox-label">
+                    {/* Terms Checkbox */}
+                    <div className="modern-form-group">
+                        <label className="modern-checkbox">
                             <input
                                 type="checkbox"
                                 checked={acceptedTerms}
@@ -277,10 +254,7 @@ const Register = () => {
                                 disabled={isLoading}
                             />
                             <span>
-                                I accept the{' '}
-                                <Link to="/terms" target="_blank">Terms of Service</Link>
-                                {' '}and{' '}
-                                <Link to="/privacy" target="_blank">Privacy Policy</Link>
+                                I accept the <Link to="/terms" target="_blank">Terms of Service</Link> and <Link to="/privacy" target="_blank">Privacy Policy</Link>
                             </span>
                         </label>
                     </div>
@@ -288,28 +262,34 @@ const Register = () => {
                     {/* Submit Button */}
                     <button 
                         type="submit" 
-                        className="btn btn-primary btn-block"
+                        className="modern-btn-primary"
                         disabled={isLoading}
                     >
                         {isLoading ? (
                             <>
-                                <span className="spinner-small"></span>
+                                <span className="btn-spinner" />
                                 Creating Account...
                             </>
                         ) : (
-                            'Create Account'
+                            <>
+                                Create Account
+                                <ArrowRight size={18} />
+                            </>
                         )}
                     </button>
                 </form>
 
                 {/* Login Link */}
-                <div className="auth-footer">
+                <div className="auth-footer-link">
                     <p>
                         Already have an account?{' '}
-                        <Link to="/login" className="auth-link">
-                            Sign in
-                        </Link>
+                        <Link to="/login">Sign in</Link>
                     </p>
+                </div>
+
+                {/* Back to Home */}
+                <div className="auth-back-home">
+                    <Link to="/">← Back to Home</Link>
                 </div>
             </div>
         </div>

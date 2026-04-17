@@ -430,3 +430,40 @@
         width: 100%;
     }
 }
+
+
+/* Join Meeting Section */
+.join-meeting-section {
+    background: linear-gradient(135deg, rgba(96, 197, 255, 0.1), rgba(26, 143, 255, 0.1));
+    border: 2px solid rgba(96, 197, 255, 0.3);
+    border-radius: 12px;
+    padding: 1.5rem;
+    text-align: center;
+    margin: 1.5rem 0;
+}
+
+.light .join-meeting-section {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.1));
+    border-color: rgba(99, 102, 241, 0.3);
+}
+
+.join-text {
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+}
+
+.light .join-text {
+    color: rgba(0, 0, 0, 0.8);
+}
+
+.btn-join {
+    padding: 0.875rem 2rem;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.btn-join:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}

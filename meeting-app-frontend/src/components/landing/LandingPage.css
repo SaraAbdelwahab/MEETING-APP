@@ -1,0 +1,539 @@
+/* Global Styles - Responsive to root theme */
+.landing-page {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  overflow-x: hidden;
+}
+
+/* Hero Gradient Background */
+.hero-gradient {
+  background: linear-gradient(180deg, var(--color-bg-primary) 0%, var(--color-bg-secondary) 50%, var(--color-bg-primary) 100%);
+}
+
+/* Grid Background Pattern */
+.grid-bg {
+  background-image: 
+    linear-gradient(var(--color-border-primary) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-border-primary) 1px, transparent 1px);
+  background-size: 50px 50px;
+}
+
+/* Text Gradient */
+.text-gradient {
+  background: linear-gradient(135deg, var(--color-interactive-primary) 0%, var(--primary-light) 50%, var(--color-info) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Shimmer Text Effect */
+.text-shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--color-interactive-primary) 0%,
+    var(--primary-light) 25%,
+    var(--color-interactive-hover) 50%,
+    var(--primary-light) 75%,
+    var(--color-interactive-primary) 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 3s linear infinite;
+}
+
+@keyframes shimmer {
+  to {
+    background-position: 200% center;
+  }
+}
+
+/* Button Styles */
+.btn-glow {
+  background: linear-gradient(135deg, var(--color-interactive-primary), var(--color-interactive-hover));
+  box-shadow: 0 0 30px var(--color-input-focus-shadow), 0 4px 20px var(--color-card-shadow);
+  transition: all 0.3s ease;
+  border: 1px solid var(--color-border-focus);
+  color: var(--color-text-inverse);
+}
+
+.btn-glow:hover {
+  box-shadow: 0 0 40px var(--color-input-focus-shadow), 0 6px 30px var(--color-card-shadow);
+  transform: translateY(-2px);
+}
+
+.btn-ghost {
+  background: var(--color-input-bg);
+  border: 1px solid var(--color-border-primary);
+  transition: all 0.3s ease;
+  color: var(--color-text-primary);
+}
+
+.btn-ghost:hover {
+  background: var(--color-nav-hover-bg);
+  border-color: var(--color-border-focus);
+  box-shadow: 0 0 20px var(--color-input-focus-shadow);
+}
+
+/* Glass Panel Effect */
+.glass-panel {
+  background: var(--color-card-bg);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--color-border-primary);
+}
+
+/* Feature Card */
+.feature-card {
+  background: var(--color-card-bg);
+  border: 1px solid var(--color-border-primary);
+  transition: all 0.3s ease;
+}
+
+.feature-card:hover {
+  background: var(--color-bg-elevated);
+  border-color: var(--color-border-secondary);
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-4px);
+}
+
+/* Section Glow */
+.section-glow {
+  background: radial-gradient(
+    ellipse 80% 50% at 50% 50%,
+    var(--color-input-focus-shadow) 0%,
+    transparent 70%
+  );
+}
+
+/* Animations */
+@keyframes glow-breathe {
+  0%, 100% {
+    opacity: 0.4;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.05);
+  }
+}
+
+.animate-glow-breathe {
+  animation: glow-breathe 4s ease-in-out infinite;
+}
+
+@keyframes fade-up-1 {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-up-1 {
+  animation: fade-up-1 0.8s ease-out 0.1s both;
+}
+
+.animate-fade-up-2 {
+  animation: fade-up-1 0.8s ease-out 0.2s both;
+}
+
+.animate-fade-up-3 {
+  animation: fade-up-1 0.8s ease-out 0.3s both;
+}
+
+.animate-fade-up-4 {
+  animation: fade-up-1 0.8s ease-out 0.4s both;
+}
+
+.animate-fade-up-5 {
+  animation: fade-up-1 0.8s ease-out 0.5s both;
+}
+
+@keyframes slide-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-slide-in-right {
+  animation: slide-in-right 1s ease-out 0.3s both;
+}
+
+/* Floating Cards Animations */
+@keyframes float-a {
+  0%, 100% {
+    transform: translateY(0px) translateX(0px);
+  }
+  33% {
+    transform: translateY(-10px) translateX(5px);
+  }
+  66% {
+    transform: translateY(5px) translateX(-5px);
+  }
+}
+
+@keyframes float-b {
+  0%, 100% {
+    transform: translateY(0px) translateX(0px);
+  }
+  33% {
+    transform: translateY(8px) translateX(-6px);
+  }
+  66% {
+    transform: translateY(-6px) translateX(4px);
+  }
+}
+
+@keyframes float-c {
+  0%, 100% {
+    transform: translateY(0px) translateX(0px);
+  }
+  33% {
+    transform: translateY(-8px) translateX(-4px);
+  }
+  66% {
+    transform: translateY(6px) translateX(6px);
+  }
+}
+
+.animate-float-a {
+  animation: float-a 6s ease-in-out infinite;
+}
+
+.animate-float-b {
+  animation: float-b 7s ease-in-out infinite;
+}
+
+.animate-float-c {
+  animation: float-c 8s ease-in-out infinite;
+}
+
+/* Lock Spin Animation */
+@keyframes lock-spin {
+  0%, 90%, 100% {
+    transform: rotate(0deg);
+  }
+  95% {
+    transform: rotate(-5deg);
+  }
+}
+
+.animate-lock-spin {
+  animation: lock-spin 3s ease-in-out infinite;
+}
+
+/* Scan Overlay Effect */
+.scan-overlay::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(26, 143, 255, 0.8),
+    transparent
+  );
+  animation: scan 3s linear infinite;
+}
+
+.light-mode .scan-overlay::after {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(99, 102, 241, 0.8),
+    transparent
+  );
+}
+
+@keyframes scan {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(80px);
+    opacity: 0;
+  }
+}
+
+/* Arc Animation for World Map */
+@keyframes arc-dash {
+  0% {
+    stroke-dashoffset: var(--dash-length, 300);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    stroke-dashoffset: 0;
+    opacity: 0;
+  }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .animate-float-a,
+  .animate-float-b,
+  .animate-float-c {
+    animation: none;
+  }
+  
+  .glass-panel {
+    transform: scale(0.85);
+  }
+}
+
+/* Smooth Scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Selection Color */
+::selection {
+  background: rgba(26, 143, 255, 0.3);
+  color: white;
+}
+
+::-moz-selection {
+  background: rgba(26, 143, 255, 0.3);
+  color: white;
+}
+
+.light-mode ::selection {
+  background: rgba(99, 102, 241, 0.2);
+  color: #0f172a;
+}
+
+.light-mode ::-moz-selection {
+  background: rgba(99, 102, 241, 0.2);
+  color: #0f172a;
+}
+
+/* Animations */
+@keyframes glow-breathe {
+  0%, 100% {
+    opacity: 0.4;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.05);
+  }
+}
+
+.animate-glow-breathe {
+  animation: glow-breathe 4s ease-in-out infinite;
+}
+
+@keyframes fade-up-1 {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-up-1 {
+  animation: fade-up-1 0.8s ease-out 0.1s both;
+}
+
+.animate-fade-up-2 {
+  animation: fade-up-1 0.8s ease-out 0.2s both;
+}
+
+.animate-fade-up-3 {
+  animation: fade-up-1 0.8s ease-out 0.3s both;
+}
+
+.animate-fade-up-4 {
+  animation: fade-up-1 0.8s ease-out 0.4s both;
+}
+
+.animate-fade-up-5 {
+  animation: fade-up-1 0.8s ease-out 0.5s both;
+}
+
+@keyframes slide-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-slide-in-right {
+  animation: slide-in-right 1s ease-out 0.3s both;
+}
+
+/* Floating Cards Animations */
+@keyframes float-a {
+  0%, 100% {
+    transform: translateY(0px) translateX(0px);
+  }
+  33% {
+    transform: translateY(-10px) translateX(5px);
+  }
+  66% {
+    transform: translateY(5px) translateX(-5px);
+  }
+}
+
+@keyframes float-b {
+  0%, 100% {
+    transform: translateY(0px) translateX(0px);
+  }
+  33% {
+    transform: translateY(8px) translateX(-6px);
+  }
+  66% {
+    transform: translateY(-6px) translateX(4px);
+  }
+}
+
+@keyframes float-c {
+  0%, 100% {
+    transform: translateY(0px) translateX(0px);
+  }
+  33% {
+    transform: translateY(-8px) translateX(-4px);
+  }
+  66% {
+    transform: translateY(6px) translateX(6px);
+  }
+}
+
+.animate-float-a {
+  animation: float-a 6s ease-in-out infinite;
+}
+
+.animate-float-b {
+  animation: float-b 7s ease-in-out infinite;
+}
+
+.animate-float-c {
+  animation: float-c 8s ease-in-out infinite;
+}
+
+/* Lock Spin Animation */
+@keyframes lock-spin {
+  0%, 90%, 100% {
+    transform: rotate(0deg);
+  }
+  95% {
+    transform: rotate(-5deg);
+  }
+}
+
+.animate-lock-spin {
+  animation: lock-spin 3s ease-in-out infinite;
+}
+
+/* Scan Overlay Effect */
+.scan-overlay::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(26, 143, 255, 0.8),
+    transparent
+  );
+  animation: scan 3s linear infinite;
+}
+
+@keyframes scan {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(80px);
+    opacity: 0;
+  }
+}
+
+/* Arc Animation for World Map */
+@keyframes arc-dash {
+  0% {
+    stroke-dashoffset: var(--dash-length, 300);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    stroke-dashoffset: 0;
+    opacity: 0;
+  }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .animate-float-a,
+  .animate-float-b,
+  .animate-float-c {
+    animation: none;
+  }
+  
+  .glass-panel {
+    transform: scale(0.85);
+  }
+}
+
+/* Smooth Scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Selection Color */
+::selection {
+  background: rgba(26, 143, 255, 0.3);
+  color: white;
+}
+
+::-moz-selection {
+  background: rgba(26, 143, 255, 0.3);
+  color: white;
+}

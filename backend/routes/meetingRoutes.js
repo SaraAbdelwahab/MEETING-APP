@@ -6,20 +6,20 @@ const authMiddleware = require('../middleware/auth');
 // All meeting routes require authentication
 router.use(authMiddleware.verifyToken);
 
-router.get('/:id/chat', meetingController.getChatHistory);
-
-// Dashboard and search routes (place before /:id routes to avoid conflicts)
-router.get('/dashboard/stats', meetingController.getDashboardStats);
+// Dashboard and search routes (MUST be before /:id routes to avoid conflicts)
+router.get('/stats', meetingController.getDashboardStats);
 router.get('/search', meetingController.searchMeetings);
 router.get('/date/:date', meetingController.getMeetingsByDate);
 
-// Meeting routes
+// Meeting CRUD routes
 router.post('/', meetingController.createMeeting);
 router.get('/', meetingController.getUserMeetings);
 router.get('/:id', meetingController.getMeeting);
-router.put('/:id', meetingController.updateMeeting);           // Update meeting
-router.delete('/:id', meetingController.deleteMeeting);        // Delete meeting
+router.get('/:id/chat', meetingController.getChatHistory);
+router.put('/:id', meetingController.updateMeeting);
+router.delete('/:id', meetingController.deleteMeeting);
 router.put('/:id/status', meetingController.updateParticipantStatus);
-router.delete('/:id/participants/:userId', meetingController.removeParticipant); // Remove participant
+router.post('/:id/join', meetingController.joinMeeting);
+router.delete('/:id/participants/:userId', meetingController.removeParticipant);
 
 module.exports = router;

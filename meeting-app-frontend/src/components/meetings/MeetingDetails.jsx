@@ -29,6 +29,7 @@ const MeetingDetails = () => {
     const [editForm, setEditForm] = useState({});
     const [activeTab, setActiveTab] = useState('details'); // 'details' or 'chat'
     const [showCall, setShowCall] = useState(false);
+    const [isJoining, setIsJoining] = useState(false);
 
     // Fetch meeting details
     useEffect(() => {
@@ -106,6 +107,19 @@ const MeetingDetails = () => {
             ...prev,
             [name]: value
         }));
+    };
+
+    const handleJoinMeeting = async () => {
+        try {
+            setIsJoining(true);
+            await meetingsAPI.joinMeeting(id);
+            setSuccessMessage('Successfully joined the meeting!');
+            fetchMeetingDetails(); // Refresh to show updated participant status
+        } catch (err) {
+            setError(err.message || 'Failed to join meeting');
+        } finally {
+            setIsJoining(false);
+        }
     };
 
     const isCreator = meeting?.created_by === user?.id;
@@ -302,6 +316,20 @@ const MeetingDetails = () => {
                                                 ✗ Decline
                                             </button>
                                         </div>
+                                    </div>
+                                )}
+
+                                {/* Join Meeting Button for non-participants */}
+                                {!isParticipant && isUpcoming(meeting.date, meeting.time) && (
+                                    <div className="join-meeting-section">
+                                        <p className="join-text">You're not a participant yet. Join this meeting to participate in chat and video calls.</p>
+                                        <button 
+                                            className="btn btn-primary btn-join"
+                                            onClick={handleJoinMeeting}
+                                            disabled={isJoining}
+                                        >
+                                            {isJoining ? 'Joining...' : '✓ Join Meeting'}
+                                        </button>
                                     </div>
                                 )}
 

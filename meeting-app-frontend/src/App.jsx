@@ -3,97 +3,65 @@ import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'r
 import { AuthProvider } from './context/AuthContext';
 import { SocketProvider } from './context/SocketContext';
 import { WebRTCProvider } from './context/WebRTCContext';
+import { SecureSignalingProvider } from './context/SecureSignalingContext';
+import { ThemeProvider } from './context/ThemeContext';
 import PrivateRoute from './components/common/PrivateRoute';
-import Navbar from './components/common/Navbar'; // We'll create this next
-import Login from './components/auth/Login'; // We'll create this next
-import Register from './components/auth/Register'; // We'll create this next
-import Dashboard from './components/meetings/Dashboard'; // We'll create this next
+import AppLayout from './components/layout/AppLayout';
+import Login from './components/auth/Login';
+import Register from './components/auth/Register';
+import PremiumDashboard from './components/dashboard/PremiumDashboard';
 import CreateMeeting from './components/meetings/CreateMeeting';
 import MeetingDetails from './components/meetings/MeetingDetails';
-import MeetingRoom from './components/meetings/MeetingRoom';
+import MeetingRoomProduction from './components/meetings/MeetingRoomProduction';
+import MeetingRoomUltimate from './components/meetings/MeetingRoomUltimate';
+import MeetingRoomPremium from './components/meetings/MeetingRoomPremium';
+import LandingPage from './components/landing/LandingPage';
+import ConnectionTest from './components/test/ConnectionTest';
+import RealDataTest from './components/test/RealDataTest';
+import MeetingsPage from './components/pages/MeetingsPage';
+import CalendarPage from './components/pages/CalendarPage';
+import RecordingsPage from './components/pages/RecordingsPage';
+import SecurityPage from './components/pages/SecurityPage';
+import SettingsPage from './components/pages/SettingsPage';
 import './App.css';
 
-// Wrapper component to show messages from navigation state
 const LocationAwareLogin = () => {
     const location = useLocation();
-    const message = location.state?.message;
-    
-    return <Login initialMessage={message} />;
+    return <Login initialMessage={location.state?.message} />;
 };
 
 function App() {
     return (
-        <AuthProvider>
-             <SocketProvider>
-                <WebRTCProvider>
-            <Router>
-                <div className="App">
-                    <Navbar />
-                    <main className="container">
-                        <Routes>
-                            {/* Public routes */}
-                            <Route path="/login" element={<LocationAwareLogin />} />
-                            <Route path="/register" element={<Register />} />
-                            
-                            {/* Protected routes */}
-                            <Route 
-                                path="/dashboard" 
-                                element={
-                                    <PrivateRoute>
-                                        <Dashboard />
-                                    </PrivateRoute>
-                                } 
-                            />
-                            
-
-                             <Route 
-                                path="/create-meeting" 
-                                element={
-                                    <PrivateRoute>
-                                        <CreateMeeting />
-                                    </PrivateRoute>
-                                } 
-                            />
-
-                             <Route 
-                                path="/meetings/:id" 
-                                element={
-                                    <PrivateRoute>
-                                        <MeetingDetails />
-                                    </PrivateRoute>
-                                } 
-                            />
-
-                            <Route
-                                        path="/meeting/:id"
-                                        element={
-                                            <PrivateRoute>
-                                                <MeetingRoom />
-                                            </PrivateRoute>
-                                        }
-                                    />
-
-                             {/* Redirect root to dashboard or login based on auth */}
-                            <Route 
-                                path="/" 
-                                element={<Navigate to="/dashboard" replace />} 
-                            />
-                            
-                            {/* 404 route */}
-                            <Route 
-                                path="*" 
-                                element={<div>404 - Page Not Found</div>} 
-                            />
-                        </Routes>
-                    </main>
-                </div>
-            </Router>
-            </WebRTCProvider>
-            </SocketProvider>
-        </AuthProvider>
+        <ThemeProvider>
+            <AuthProvider>
+                <SocketProvider>
+                    <SecureSignalingProvider>
+                        <WebRTCProvider>
+                            <Router>
+                                <Routes>
+                                    <Route path="/" element={<LandingPage />} />
+                                    <Route path="/test" element={<ConnectionTest />} />
+                                    <Route path="/real-test" element={<RealDataTest />} />
+                                    <Route path="/login"    element={<LocationAwareLogin />} />
+                                    <Route path="/register" element={<Register />} />
+                                    <Route path="/dashboard" element={<PrivateRoute><AppLayout><PremiumDashboard /></AppLayout></PrivateRoute>} />
+                                    <Route path="/create-meeting" element={<PrivateRoute><CreateMeeting /></PrivateRoute>} />
+                                    <Route path="/meetings/:id" element={<PrivateRoute><MeetingRoomPremium /></PrivateRoute>} />
+                                    <Route path="/meeting/:id" element={<PrivateRoute><MeetingRoomPremium /></PrivateRoute>} />
+                                    <Route path="/meetings"   element={<PrivateRoute><AppLayout><MeetingsPage /></AppLayout></PrivateRoute>} />
+                                    <Route path="/calendar"   element={<PrivateRoute><AppLayout><CalendarPage /></AppLayout></PrivateRoute>} />
+                                    <Route path="/recordings" element={<PrivateRoute><AppLayout><RecordingsPage /></AppLayout></PrivateRoute>} />
+                                    <Route path="/security"   element={<PrivateRoute><AppLayout><SecurityPage /></AppLayout></PrivateRoute>} />
+                                    <Route path="/settings"   element={<PrivateRoute><AppLayout><SettingsPage /></AppLayout></PrivateRoute>} />
+                                    <Route path="*" element={<Navigate to="/" replace />} />
+                                </Routes>
+                            </Router>
+                        </WebRTCProvider>
+                    </SecureSignalingProvider>
+                </SocketProvider>
+            </AuthProvider>
+        </ThemeProvider>
     );
 }
-
-
 
 export default App;

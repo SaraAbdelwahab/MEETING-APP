@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import meetingsAPI from '../../api/meetings';
+import AppLayout from '../layout/AppLayout';
+import { Calendar, Clock, Users, FileText, Plus, X, ArrowLeft } from 'lucide-react';
 import './CreateMeeting.css';
 
 const CreateMeeting = () => {
@@ -144,31 +146,46 @@ const CreateMeeting = () => {
     };
 
     return (
-        <div className="create-meeting-container">
-            <div className="create-meeting-card">
-                <div className="create-meeting-header">
-                    <h1>Schedule a New Meeting</h1>
-                    <p>Fill in the details below to create your meeting</p>
-                </div>
+        <AppLayout>
+            <div className="create-meeting-wrapper">
+                {/* Back button */}
+                <button
+                    onClick={() => navigate('/dashboard')}
+                    className="back-button"
+                    disabled={isLoading}
+                >
+                    <ArrowLeft size={18} />
+                    <span>Back to Dashboard</span>
+                </button>
 
-                {apiError && (
-                    <div className="alert alert-error">
-                        <span className="alert-icon">⚠️</span>
-                        <span>{apiError}</span>
-                        <button 
-                            className="alert-close" 
-                            onClick={() => setApiError('')}
-                        >
-                            ×
-                        </button>
+                <div className="create-meeting-card">
+                    <div className="create-meeting-header">
+                        <div className="header-icon">
+                            <Calendar size={32} />
+                        </div>
+                        <h1>Schedule a New Meeting</h1>
+                        <p>Fill in the details below to create your meeting</p>
                     </div>
-                )}
 
-                <form onSubmit={handleSubmit} className="create-meeting-form">
+                    {apiError && (
+                        <div className="alert alert-error">
+                            <span className="alert-icon">⚠️</span>
+                            <span>{apiError}</span>
+                            <button 
+                                className="alert-close" 
+                                onClick={() => setApiError('')}
+                            >
+                                <X size={16} />
+                            </button>
+                        </div>
+                    )}
+
+                    <form onSubmit={handleSubmit} className="create-meeting-form">
                     {/* Title */}
                     <div className="form-group">
                         <label htmlFor="title">
-                            Meeting Title <span className="required">*</span>
+                            <FileText size={16} />
+                            <span>Meeting Title <span className="required">*</span></span>
                         </label>
                         <input
                             type="text"
@@ -188,7 +205,8 @@ const CreateMeeting = () => {
                     {/* Description */}
                     <div className="form-group">
                         <label htmlFor="description">
-                            Description <span className="optional">(optional)</span>
+                            <FileText size={16} />
+                            <span>Description <span className="optional">(optional)</span></span>
                         </label>
                         <textarea
                             id="description"
@@ -205,7 +223,8 @@ const CreateMeeting = () => {
                     <div className="form-row">
                         <div className="form-group">
                             <label htmlFor="date">
-                                Date <span className="required">*</span>
+                                <Calendar size={16} />
+                                <span>Date <span className="required">*</span></span>
                             </label>
                             <input
                                 type="date"
@@ -224,7 +243,8 @@ const CreateMeeting = () => {
 
                         <div className="form-group">
                             <label htmlFor="time">
-                                Time <span className="required">*</span>
+                                <Clock size={16} />
+                                <span>Time <span className="required">*</span></span>
                             </label>
                             <input
                                 type="time"
@@ -242,7 +262,8 @@ const CreateMeeting = () => {
 
                         <div className="form-group">
                             <label htmlFor="duration">
-                                Duration (minutes) <span className="required">*</span>
+                                <Clock size={16} />
+                                <span>Duration <span className="required">*</span></span>
                             </label>
                             <select
                                 id="duration"
@@ -269,7 +290,8 @@ const CreateMeeting = () => {
                     {/* Invite Participants */}
                     <div className="form-group">
                         <label htmlFor="invitees">
-                            Invite Participants <span className="optional">(optional)</span>
+                            <Users size={16} />
+                            <span>Invite Participants <span className="optional">(optional)</span></span>
                         </label>
                         <div className="invitee-input-group">
                             <input
@@ -288,7 +310,8 @@ const CreateMeeting = () => {
                                 className="btn-add-invitee"
                                 disabled={isLoading}
                             >
-                                Add
+                                <Plus size={16} />
+                                <span>Add</span>
                             </button>
                         </div>
                         {inviteeError && (
@@ -302,10 +325,11 @@ const CreateMeeting = () => {
                     {/* Invitees List */}
                     {formData.invitees.length > 0 && (
                         <div className="invitees-list">
-                            <label>Invited Participants:</label>
+                            <label>Invited Participants ({formData.invitees.length}):</label>
                             <div className="invitee-tags">
                                 {formData.invitees.map(email => (
                                     <div key={email} className="invitee-tag">
+                                        <Users size={14} />
                                         <span>{email}</span>
                                         <button
                                             type="button"
@@ -313,7 +337,7 @@ const CreateMeeting = () => {
                                             className="remove-invitee"
                                             disabled={isLoading}
                                         >
-                                            ×
+                                            <X size={14} />
                                         </button>
                                     </div>
                                 ))}
@@ -342,13 +366,17 @@ const CreateMeeting = () => {
                                     Creating...
                                 </>
                             ) : (
-                                'Create Meeting'
+                                <>
+                                    <Calendar size={16} />
+                                    Create Meeting
+                                </>
                             )}
                         </button>
                     </div>
                 </form>
             </div>
         </div>
+        </AppLayout>
     );
 };
 

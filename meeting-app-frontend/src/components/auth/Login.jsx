@@ -1,93 +1,61 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import { useTheme } from '../../context/ThemeContext';
 import { validateLogin } from '../../utils/validators';
+import { Mail, Lock, Eye, EyeOff, ArrowRight, Shield, Sun, Moon } from 'lucide-react';
 import './Auth.css';
 
 const Login = ({ initialMessage }) => {
-    // Hooks
     const navigate = useNavigate();
     const location = useLocation();
     const { login } = useAuth();
-
-    // Get the page user tried to access before login
+    const { isDark, toggle } = useTheme();
     const from = location.state?.from?.pathname || '/dashboard';
 
-    // Form state
     const [formData, setFormData] = useState({
         email: '',
         password: ''
     });
 
-    // UI state
     const [errors, setErrors] = useState({});
     const [apiError, setApiError] = useState('');
+    const [successMessage, setSuccessMessage] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
 
-    // Add this after useState declarations
     useEffect(() => {
-    if (initialMessage) {
-        setApiError(initialMessage);
-        // Change the alert type to success for registration success
-        setTimeout(() => {
-            const alertDiv = document.querySelector('.alert');
-            if (alertDiv) {
-                alertDiv.classList.add('alert-success');
-                alertDiv.classList.remove('alert-error');
-            }
-        }, 100);
-    }
-       }, [initialMessage]);
-    
+        if (initialMessage) {
+            setSuccessMessage(initialMessage);
+        }
+    }, [initialMessage]);
 
-
-
-    // Handle input changes
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setFormData(prev => ({
-            ...prev,
-            [name]: value
-        }));
-        // Clear field-specific error when user types
+        setFormData(prev => ({ ...prev, [name]: value }));
         if (errors[name]) {
-            setErrors(prev => ({
-                ...prev,
-                [name]: ''
-            }));
+            setErrors(prev => ({ ...prev, [name]: '' }));
         }
-        // Clear API error when user makes any change
-        if (apiError) {
-            setApiError('');
-        }
+        if (apiError) setApiError('');
     };
 
-    // Handle form submission
     const handleSubmit = async (e) => {
         e.preventDefault();
         
-        // Validate form
         const validation = validateLogin(formData);
-        
         if (!validation.isValid) {
             setErrors(validation.errors);
             return;
         }
 
-        // Clear any previous errors
         setErrors({});
         setApiError('');
         setIsLoading(true);
 
         try {
-            // Attempt login
             await login(formData);
-            
-            // Redirect to dashboard or the page they came from
             navigate(from, { replace: true });
         } catch (error) {
-            // Handle login error
             setApiError(error.message || 'Login failed. Please try again.');
         } finally {
             setIsLoading(false);
@@ -95,59 +63,76 @@ const Login = ({ initialMessage }) => {
     };
 
     return (
-        <div className="auth-container">
-            <div className="auth-card">
-                <div className="auth-header">
-                    <h2>Welcome Back</h2>
-                    <p>Sign in to your account</p>
+        <div className="modern-auth-container">
+            {/* Theme Toggle */}
+            <button
+                onClick={toggle}
+                className="theme-toggle-auth"
+                aria-label="Toggle theme"
+            >
+                {isDark ? <Sun size={18} /> : <Moon size={18} />}
+            </button>
+
+            {/* Background Effects */}
+            <div className="auth-bg-effects">
+                <div className="auth-glow auth-glow-1" />
+                <div className="auth-glow auth-glow-2" />
+                <div className="auth-grid-bg" />
+            </div>
+
+            <div className="modern-auth-card">
+                {/* Logo/Brand */}
+                <div className="auth-brand">
+                    <div className="auth-brand-icon">
+                        <Shield size={24} />
+                    </div>
+                    <h1>Welcome Back</h1>
+                    <p>Sign in to continue to your secure meetings</p>
                 </div>
 
-                {/* Error Alert */}
-                {apiError && (
-                    <div className="alert alert-error">
-                        <span className="alert-icon">⚠️</span>
-                        <span>{apiError}</span>
-                        <button 
-                            className="alert-close" 
-                            onClick={() => setApiError('')}
-                        >
-                            ×
-                        </button>
+                {/* Success Message */}
+                {successMessage && (
+                    <div className="modern-alert modern-alert-success">
+                        <span>✓</span>
+                        <span>{successMessage}</span>
                     </div>
                 )}
 
-                <form onSubmit={handleSubmit} className="auth-form">
+                {/* Error Message */}
+                {apiError && (
+                    <div className="modern-alert modern-alert-error">
+                        <span>⚠</span>
+                        <span>{apiError}</span>
+                        <button onClick={() => setApiError('')}>×</button>
+                    </div>
+                )}
+
+                <form onSubmit={handleSubmit} className="modern-auth-form">
                     {/* Email Field */}
-                    <div className="form-group">
-                        <label htmlFor="email">
-                            Email Address <span className="required">*</span>
-                        </label>
-                        <div className="input-wrapper">
-                            <span className="input-icon"></span>
+                    <div className="modern-form-group">
+                        <label htmlFor="email">Email Address</label>
+                        <div className="modern-input-wrapper">
+                            <Mail size={18} className="input-icon-left" />
                             <input
                                 type="email"
                                 id="email"
                                 name="email"
                                 value={formData.email}
                                 onChange={handleChange}
-                                placeholder="Enter your email"
+                                placeholder="you@example.com"
                                 className={errors.email ? 'error' : ''}
                                 disabled={isLoading}
                                 autoComplete="email"
                             />
                         </div>
-                        {errors.email && (
-                            <span className="error-message">{errors.email}</span>
-                        )}
+                        {errors.email && <span className="modern-error">{errors.email}</span>}
                     </div>
 
                     {/* Password Field */}
-                    <div className="form-group">
-                        <label htmlFor="password">
-                            Password <span className="required">*</span>
-                        </label>
-                        <div className="input-wrapper">
-                            <span className="input-icon"></span>
+                    <div className="modern-form-group">
+                        <label htmlFor="password">Password</label>
+                        <div className="modern-input-wrapper">
+                            <Lock size={18} className="input-icon-left" />
                             <input
                                 type={showPassword ? 'text' : 'password'}
                                 id="password"
@@ -161,22 +146,20 @@ const Login = ({ initialMessage }) => {
                             />
                             <button
                                 type="button"
-                                className="password-toggle"
+                                className="input-icon-right"
                                 onClick={() => setShowPassword(!showPassword)}
                                 tabIndex="-1"
                             >
-                                {showPassword ? '👁️' : '👁️‍🗨️'}
+                                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                             </button>
                         </div>
-                        {errors.password && (
-                            <span className="error-message">{errors.password}</span>
-                        )}
+                        {errors.password && <span className="modern-error">{errors.password}</span>}
                     </div>
 
-                    {/* Remember Me & Forgot Password */}
-                    <div className="form-options">
-                        <label className="checkbox-label">
-                            <input type="checkbox" name="remember" />
+                    {/* Remember & Forgot */}
+                    <div className="auth-options">
+                        <label className="modern-checkbox">
+                            <input type="checkbox" />
                             <span>Remember me</span>
                         </label>
                         <Link to="/forgot-password" className="forgot-link">
@@ -187,28 +170,34 @@ const Login = ({ initialMessage }) => {
                     {/* Submit Button */}
                     <button 
                         type="submit" 
-                        className="btn btn-primary btn-block"
+                        className="modern-btn-primary"
                         disabled={isLoading}
                     >
                         {isLoading ? (
                             <>
-                                <span className="spinner-small"></span>
+                                <span className="btn-spinner" />
                                 Signing in...
                             </>
                         ) : (
-                            'Sign In'
+                            <>
+                                Sign In
+                                <ArrowRight size={18} />
+                            </>
                         )}
                     </button>
                 </form>
 
                 {/* Register Link */}
-                <div className="auth-footer">
+                <div className="auth-footer-link">
                     <p>
                         Don't have an account?{' '}
-                        <Link to="/register" className="auth-link">
-                            Create one now
-                        </Link>
+                        <Link to="/register">Create one now</Link>
                     </p>
+                </div>
+
+                {/* Back to Home */}
+                <div className="auth-back-home">
+                    <Link to="/">← Back to Home</Link>
                 </div>
             </div>
         </div>

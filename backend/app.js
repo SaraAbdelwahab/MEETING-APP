@@ -1,12 +1,14 @@
+require('dotenv').config({ path: './.env' });
+
 const express = require('express');
 const cors = require('cors');
 const http = require('http');
 const SocketService = require('./services/socketService');
-require('dotenv').config();
 
 
 const authRoutes = require('./routes/authRoutes');
 const meetingRoutes = require('./routes/meetingRoutes');
+const securityRoutes = require('./routes/securityRoutes');
 const authMiddleware = require('./middleware/auth');
 
 
@@ -20,7 +22,8 @@ app.use(express.urlencoded({ extended: true })); // Parse form data
 
 // Routes
 app.use('/api/auth', authRoutes);
-app.use('/api/meetings', meetingRoutes); 
+app.use('/api/meetings', meetingRoutes);
+app.use('/api', securityRoutes);
 
 // Create HTTP server
 const server = http.createServer(app);

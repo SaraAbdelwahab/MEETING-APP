@@ -4,9 +4,10 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "vitest --run",
     "start": "node app.js",
-    "dev": "nodemon app.js"
+    "dev": "nodemon app.js",
+    "migrate": "node migrations/migrate.js"
   },
   "keywords": [],
   "author": "",
@@ -18,10 +19,15 @@
     "dotenv": "^17.3.1",
     "express": "^5.2.1",
     "jsonwebtoken": "^9.0.3",
+    "mlkem": "^1.0.0",
     "mysql2": "^3.18.2",
-    "socket.io": "^4.8.3"
+    "socket.io": "^4.8.3",
+    "uuid": "^11.1.0"
   },
   "devDependencies": {
-    "nodemon": "^3.1.14"
+    "@vitest/coverage-v8": "^3.2.4",
+    "fast-check": "^3.23.2",
+    "nodemon": "^3.1.14",
+    "vitest": "^3.2.4"
   }
 }

@@ -284,6 +284,59 @@ const meetingController = {
         }
     },
 
+    // Join meeting via link (anyone with link can join)
+    async joinMeeting(req, res) {
+        try {
+            const meetingId = req.params.id;
+            const userId = req.user.userId;
+
+            // Check if meeting exists
+            const meeting = await Meeting.findById(meetingId);
+            if (!meeting) {
+                return res.status(404).json({ 
+                    message: 'Meeting not found' 
+                });
+            }
+
+            // Check if user is already the creator
+            if (meeting.created_by === userId) {
+                return res.status(400).json({ 
+                    message: 'You are the creator of this meeting' 
+                });
+            }
+
+            // Check if user is already a participant
+            const isParticipant = await Participant.isParticipant(meetingId, userId);
+            if (isParticipant) {
+                return res.status(400).json({ 
+                    message: 'You are already a participant of this meeting' 
+                });
+            }
+
+            // Add user as participant with 'accepted' status
+            await Participant.addParticipants(meetingId, [userId]);
+            await Participant.updateStatus(meetingId, userId, 'accepted');
+
+            // Get updated meeting details
+            const updatedMeeting = await Meeting.findById(meetingId);
+            const participants = await Participant.getMeetingParticipants(meetingId);
+
+            res.status(200).json({
+                message: 'Successfully joined the meeting',
+                meeting: {
+                    ...updatedMeeting,
+                    participants
+                }
+            });
+
+        } catch (error) {
+            console.error('Join meeting error:', error);
+            res.status(500).json({ 
+                message: 'Error joining meeting' 
+            });
+        }
+    },
+
     // Remove participant from meeting (creator only)
     async removeParticipant(req, res) {
         try {
