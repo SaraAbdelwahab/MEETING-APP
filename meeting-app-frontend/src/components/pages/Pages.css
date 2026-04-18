@@ -253,6 +253,7 @@
   .page-header-section {
     flex-direction: column;
     align-items: flex-start;
+    gap: 12px;
   }
 
   .page-header-actions {
@@ -261,11 +262,30 @@
   }
 
   .page-title-main {
-    font-size: 24px;
+    font-size: 22px;
+  }
+  
+  .page-subtitle-main {
+    font-size: 13px;
+  }
+  
+  .page-icon-wrapper {
+    width: 42px;
+    height: 42px;
   }
 
   .content-card-body {
     padding: 16px;
+  }
+  
+  .btn-primary {
+    padding: 9px 16px;
+    font-size: 13px;
+  }
+  
+  .btn-icon {
+    width: 38px;
+    height: 38px;
   }
 }
 
@@ -273,13 +293,40 @@
   .page-title-main {
     font-size: 20px;
   }
+  
+  .page-subtitle-main {
+    font-size: 12px;
+  }
 
   .page-icon-wrapper {
-    width: 40px;
-    height: 40px;
+    width: 38px;
+    height: 38px;
+  }
+  
+  .page-icon-wrapper svg {
+    width: 20px;
+    height: 20px;
   }
 
   .empty-state-container {
-    padding: 48px 24px;
+    padding: 40px 20px;
+  }
+  
+  .empty-icon-wrapper {
+    width: 52px;
+    height: 52px;
+  }
+  
+  .empty-title {
+    font-size: 15px;
+  }
+  
+  .empty-description {
+    font-size: 12px;
+  }
+  
+  .btn-primary {
+    width: 100%;
+    justify-content: center;
   }
 }

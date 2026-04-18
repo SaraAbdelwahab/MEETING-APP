@@ -77,13 +77,13 @@ const CalendarPage = () => {
                     <p className="loading-text">Loading calendar…</p>
                 </div>
             ) : (
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '16px' }}>
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '16px' }}>
+                <div className="grid grid-cols-1 gap-4">
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
                         {/* Calendar */}
-                        <div className="content-card" style={{ gridColumn: 'span 2' }}>
+                        <div className="content-card lg:col-span-2">
                             <div className="content-card-body">
-                                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '24px' }}>
-                                    <h2 style={{ fontSize: '18px', fontWeight: '700', color: '#0f172a' }}>{monthName}</h2>
+                                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '20px' }}>
+                                    <h2 className="text-base sm:text-lg font-bold text-gray-900 dark:text-white">{monthName}</h2>
                                     <div style={{ display: 'flex', gap: '8px' }}>
                                         <button onClick={previousMonth} className="btn-icon">
                                             <MdChevronLeft size={20} />
@@ -156,9 +156,9 @@ const CalendarPage = () => {
                         </div>
 
                         {/* Selected Day Meetings */}
-                        <div className="content-card">
+                        <div className="content-card lg:col-span-1">
                             <div className="content-card-body">
-                                <h3 style={{ fontSize: '18px', fontWeight: '700', color: '#0f172a', marginBottom: '16px' }}>
+                                <h3 className="text-base sm:text-lg font-bold text-gray-900 dark:text-white mb-4">
                                     {selectedDate ? selectedDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : 'Select a date'}
                                 </h3>
                                 {selectedDate && dayMeetings.length > 0 ? (
@@ -167,30 +167,15 @@ const CalendarPage = () => {
                                             <div
                                                 key={meeting.id}
                                                 onClick={() => navigate(`/meeting/${meeting.id}`)}
-                                                style={{
-                                                    padding: '12px',
-                                                    borderRadius: '10px',
-                                                    border: '1px solid #e2e8f0',
-                                                    background: '#ffffff',
-                                                    cursor: 'pointer',
-                                                    transition: 'all 0.2s ease'
-                                                }}
-                                                onMouseEnter={(e) => {
-                                                    e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.3)';
-                                                    e.currentTarget.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.06)';
-                                                }}
-                                                onMouseLeave={(e) => {
-                                                    e.currentTarget.style.borderColor = '#e2e8f0';
-                                                    e.currentTarget.style.boxShadow = 'none';
-                                                }}
+                                                className="p-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 cursor-pointer transition-all hover:border-purple-300 dark:hover:border-purple-600 hover:shadow-md"
                                             >
                                                 <div style={{ display: 'flex', alignItems: 'start', gap: '8px' }}>
-                                                    <MdVideoCall size={18} style={{ color: '#8b5cf6', marginTop: '2px', flexShrink: 0 }} />
+                                                    <MdVideoCall size={18} className="text-purple-600 dark:text-purple-400 mt-0.5 flex-shrink-0" />
                                                     <div style={{ flex: 1, minWidth: 0 }}>
-                                                        <p style={{ fontSize: '14px', fontWeight: '600', color: '#0f172a', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                                                        <p className="text-sm font-semibold text-gray-900 dark:text-white truncate">
                                                             {meeting.title}
                                                         </p>
-                                                        <div style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '12px', color: '#64748b', marginTop: '4px' }}>
+                                                        <div className="flex items-center gap-1 text-xs text-gray-600 dark:text-gray-400 mt-1">
                                                             <MdAccessTime size={12} />
                                                             {meeting.time}
                                                         </div>
@@ -200,9 +185,9 @@ const CalendarPage = () => {
                                         ))}
                                     </div>
                                 ) : selectedDate ? (
-                                    <p style={{ fontSize: '14px', color: '#64748b' }}>No meetings scheduled</p>
+                                    <p className="text-sm text-gray-600 dark:text-gray-400">No meetings scheduled</p>
                                 ) : (
-                                    <p style={{ fontSize: '14px', color: '#64748b' }}>Select a date to view meetings</p>
+                                    <p className="text-sm text-gray-600 dark:text-gray-400">Select a date to view meetings</p>
                                 )}
                             </div>
                         </div>

@@ -525,6 +525,10 @@
   .stats-grid {
     grid-template-columns: repeat(2, 1fr);
   }
+  
+  .meetings-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 768px) {
@@ -532,42 +536,120 @@
     flex-direction: column;
     align-items: flex-start;
     gap: 16px;
-    padding: 20px;
+    padding: 16px;
   }
 
   .page-title {
-    font-size: 24px;
+    font-size: 22px;
+  }
+  
+  .page-subtitle {
+    font-size: 13px;
   }
 
   .stats-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
   }
 
   .meetings-grid {
     grid-template-columns: 1fr;
+    gap: 14px;
   }
 
   .content-controls {
     flex-direction: column;
     align-items: stretch;
+    gap: 12px;
   }
 
   .search-container {
     min-width: 100%;
+  }
+  
+  .tabs-container {
+    width: 100%;
+    justify-content: space-between;
+  }
+  
+  .filter-btn {
+    width: 100%;
+    justify-content: center;
   }
 
   .header-right {
     width: 100%;
     justify-content: space-between;
   }
+  
+  .meeting-card {
+    padding: 16px;
+  }
+  
+  .meeting-title {
+    font-size: 16px;
+  }
+  
+  .meeting-description {
+    font-size: 12px;
+  }
 }
 
 @media (max-width: 480px) {
   .dashboard-header {
-    padding: 16px;
+    padding: 14px;
   }
 
   .page-title {
     font-size: 20px;
+  }
+  
+  .page-subtitle {
+    font-size: 12px;
+  }
+  
+  .stats-grid {
+    gap: 10px;
+  }
+  
+  .stat-card {
+    padding: 10px;
+  }
+  
+  .stat-icon {
+    width: 36px;
+    height: 36px;
+  }
+  
+  .stat-value {
+    font-size: 20px;
+  }
+  
+  .stat-label {
+    font-size: 11px;
+  }
+  
+  .meeting-card {
+    padding: 14px;
+  }
+  
+  .meeting-meta {
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-start;
+  }
+  
+  .join-meeting-btn {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .empty-state {
+    padding: 48px 20px;
+  }
+  
+  .empty-icon {
+    width: 56px;
+    height: 56px;
   }
 }

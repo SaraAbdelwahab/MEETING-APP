@@ -237,8 +237,83 @@
     left: 0;
     box-shadow: 8px 0 32px var(--color-card-shadow);
   }
+  
+  .app-layout-main {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .app-layout-content {
+    padding: 16px 12px;
+  }
+
+  .page-header {
+    padding: 16px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .page-header-title {
+    font-size: 22px;
+  }
+  
+  .page-header-subtitle {
+    font-size: 13px;
+  }
+
+  .page-header-right {
+    width: 100%;
+    justify-content: space-between;
+  }
 }
 
+@media (max-width: 480px) {
+  .app-layout-content {
+    padding: 12px 8px;
+  }
+
+  .page-header {
+    padding: 14px;
+  }
+
+  .page-header-title {
+    font-size: 20px;
+  }
+  
+  .page-header-subtitle {
+    font-size: 12px;
+  }
+  
+  .sidebar-header {
+    padding: 20px 16px;
+  }
+  
+  .logo-text {
+    font-size: 18px;
+  }
+  
+  .logo-tagline {
+    font-size: 10px;
+  }
+  
+  .nav-item {
+    padding: 10px 12px;
+    font-size: 13px;
+  }
+  
+  .sidebar-footer {
+    padding: 14px;
+  }
+  
+  .user-name {
+    font-size: 12px;
+  }
+  
+  .user-email {
+    font-size: 10px;
+  }
+}
 
 /* App Layout Container */
 .app-layout-container {

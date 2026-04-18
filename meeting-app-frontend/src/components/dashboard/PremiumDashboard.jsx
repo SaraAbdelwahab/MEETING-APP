@@ -169,13 +169,13 @@ const PremiumDashboard = () => {
   return (
     <>
       {/* Page Title Section */}
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Dashboard</h1>
-        <p className="text-gray-600 dark:text-gray-400">Welcome back, {user?.username} 👋</p>
+      <div className="mb-6 sm:mb-8">
+        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-2">Dashboard</h1>
+        <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400">Welcome back, {user?.username} 👋</p>
       </div>
 
       {/* Premium Stats Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6 sm:mb-8">
         {statCards.map((stat) => {
           const Icon = stat.icon;
           return (
